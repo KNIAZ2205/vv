@@ -795,11 +795,58 @@
                 padding: 15px;
             }
         }
+      .music-btn-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.music-tooltip {
+    background: #8b7355;
+    color: #f5f0e8;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: fadeInTooltip 0.5s ease-out;
+    position: relative;
+}
+.music-tooltip::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-right-color: #8b7355;
+}
+@keyframes fadeInTooltip {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+/* Адаптация для мобильных: уменьшаем размер */
+@media (max-width: 600px) {
+    .music-tooltip {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        border-radius: 16px;
+    }
+    .music-tooltip::before {
+        border-width: 5px;
+    }
+}
     </style>
 </head>
 <body>
     <!-- Кнопка управления музыкой -->
+    <div class="music-btn-wrapper">
     <button class="music-btn paused" id="musicBtn" title="Включить музыку">♪</button>
+    <div class="music-tooltip" id="musicTooltip">🎵 Включить музыку</div>
+</div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1133,6 +1180,11 @@
 
     musicBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+         const tooltip = document.getElementById('musicTooltip');
+    if (tooltip) tooltip.style.display = 'none';
+    
+    if (!audioElement) audioElement = createAudio();
+    if (isMusicPlaying) {
         if (!audioElement) audioElement = createAudio();
         if (isMusicPlaying) {
             audioElement.pause();
