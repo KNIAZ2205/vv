@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Владимир & Варвара — Приглашение на свадьбу</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: #f5f0e8;
+            color: #5c4033;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #8b7355;
+            border: none;
+            color: #f5f0e8;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-btn:hover {
+            background: #6b5b4a;
+            transform: scale(1.1);
+        }
+
+        .music-btn.paused {
+            opacity: 0.7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #d4c5b2 0%, #e8dcc8 25%, #f5efe0 50%, #e8dcc8 75%, #d4c5b2 100%);
+            overflow: hidden;
+            flex-direction: column;
+            padding: 40px 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(139, 115, 85, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 115, 85, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(210, 180, 140, 0.2) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Общее фото молодоженов */
+        .hero-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #c4a882;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            background: #e8dcc8;
+        }
+
+        .hero-date {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: #8b7355;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-names {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #5c4033;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            line-height: 1.2;
+        }
+
+        .hero-ampersand {
+            font-size: 3rem;
+            color: #a0845c;
+            font-style: italic;
+            margin: 10px 0;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #7a5c3e;
+            letter-spacing: 2px;
+            margin-top: 20px;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #8b7355;
+        }
+
+        @keyframes bounce {
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-alt {
+            background-color: #ede4d6;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #5c4033;
+            margin-bottom: 50px;
+            position: relative;
+            letter-spacing: 1px;
+        }
+
+        .section-title::after {
+            content: '❦';
+            display: block;
+            font-size: 1.5rem;
+            color: #a0845c;
+            margin-top: 15px;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background: linear-gradient(135deg, #e8dcc8 0%, #f5efe0 50%, #e8dcc8 100%);
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .timer-block {
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid #c4a882;
+            border-radius: 15px;
+            padding: 25px 20px;
+            min-width: 120px;
+            backdrop-filter: blur(10px);
+        }
+
+        .timer-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #5c4033;
+            display: block;
+            line-height: 1;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Календарь */
+        .calendar-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid #d4c5b2;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #5c4033;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar-table th {
+            color: #8b7355;
+            font-weight: normal;
+            padding: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .calendar-table td {
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 1.1rem;
+            color: #5c4033;
+            position: relative;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .calendar-table td.empty {
+            color: #c4b9a8;
+        }
+
+        .calendar-table td.wedding-day {
+            font-weight: bold;
+            color: #8b0000;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calendar-table td.wedding-day::after {
+            content: '❤️';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.2em;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: #c4a882;
+            top: 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #d4c5b2;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: #8b7355;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            border: 4px solid #f5f0e8;
+        }
+
+        .timeline-time {
+            font-weight: bold;
+            color: #8b7355;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            color: #5c4033;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc {
+            color: #7a5c3e;
+            font-size: 0.95rem;
+        }
+
+        .timeline-spacer {
+            width: 45%;
+        }
+
+        /* Location Card */
+        .location-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #d4c5b2;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .location-photo {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #c4a882;
+            background: #e8dcc8;
+        }
+
+        .location-name {
+            font-size: 1.8rem;
+            color: #5c4033;
+            margin-bottom: 15px;
+        }
+
+        .location-address {
+            font-size: 1.1rem;
+            color: #7a5c3e;
+            margin-bottom: 20px;
+        }
+
+        .map-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #8b7355;
+            color: #f5f0e8;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .map-btn:hover {
+            background: #6b5b4a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Wishes Section */
+        .wishes-container {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #d4c5b2;
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .wish-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .wish-form input,
+        .wish-form textarea {
+            padding: 12px 15px;
+            border: 1px solid #d4c5b2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            color: #5c4033;
+            resize: vertical;
+        }
+
+        .wish-form textarea {
+            min-height: 100px;
+        }
+
+        .wish-form button {
+            padding: 12px 30px;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .wish-form button:hover {
+            background: #6b5b4a;
+            transform: translateY(-2px);
+        }
+
+        .wishes-list {
+            margin-top: 30px;
+        }
+
+        .wish-item {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #c4a882;
+        }
+
+        .wish-item .name {
+            font-weight: bold;
+            color: #8b7355;
+            margin-bottom: 5px;
+        }
+
+        .wish-item .text {
+            color: #5c4033;
+        }
+
+        /* RSVP Form */
+        .rsvp-container {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #d4c5b2;
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .rsvp-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .guest-group {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0d5c5;
+        }
+
+        .guest-group h3 {
+            color: #8b7355;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .rsvp-form input,
+        .rsvp-form select,
+        .rsvp-form textarea {
+            padding: 12px 15px;
+            border: 1px solid #d4c5b2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            color: #5c4033;
+            width: 100%;
+        }
+
+        .rsvp-form select {
+            cursor: pointer;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #5c4033;
+        }
+
+        .radio-group input[type="radio"] {
+            width: auto;
+            accent-color: #8b7355;
+        }
+
+        .add-guest-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px dashed #c4a882;
+            color: #8b7355;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .add-guest-btn:hover {
+            background: rgba(196, 168, 130, 0.2);
+        }
+
+        .remove-guest-btn {
+            padding: 5px 15px;
+            background: #d4a5a5;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .remove-guest-btn:hover {
+            background: #c49595;
+        }
+
+        .submit-btn {
+            padding: 14px 30px;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #6b5b4a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Contacts */
+        .contacts-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #d4c5b2;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            min-width: 220px;
+        }
+
+        .contact-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #c4a882;
+            margin-bottom: 20px;
+            background: #e8dcc8;
+        }
+
+        .contact-name {
+            font-size: 1.3rem;
+            color: #5c4033;
+            margin-bottom: 10px;
+        }
+
+        .contact-phone {
+            font-size: 1.1rem;
+            color: #8b7355;
+            text-decoration: none;
+            display: block;
+        }
+
+        .contact-phone:hover {
+            color: #6b5b4a;
+        }
+
+        .contact-role {
+            color: #a09080;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        /* Farewell */
+        .farewell {
+            text-align: center;
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f5efe0 0%, #e8dcc8 50%, #f5efe0 100%);
+        }
+
+        .farewell-text {
+            font-size: 1.8rem;
+            color: #5c4033;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .farewell-names {
+            font-size: 2.5rem;
+            color: #8b7355;
+            font-weight: bold;
+        }
+
+        .heart-divider {
+            font-size: 2rem;
+            color: #c4a882;
+            margin: 20px 0;
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #f5f0e8;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            border: 2px solid #c4a882;
+        }
+
+        .modal-content h3 {
+            color: #5c4033;
+            margin-bottom: 15px;
+        }
+
+        .modal-content button {
+            padding: 10px 25px;
+            background: #8b7355;
+            color: #f5f0e8;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Georgia', serif;
+        }
+
+        /* Decorative elements */
+        .floral-divider {
+            text-align: center;
+            font-size: 2rem;
+            color: #c4a882;
+            margin: 30px 0;
+            letter-spacing: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-photo {
+                width: 160px;
+                height: 160px;
+            }
+            .hero-names {
+                font-size: 2.5rem;
+            }
+            .hero-ampersand {
+                font-size: 2rem;
+            }
+            .timer-container {
+                gap: 15px;
+            }
+            .timer-block {
+                min-width: 80px;
+                padding: 15px 10px;
+            }
+            .timer-number {
+                font-size: 2rem;
+            }
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                padding-left: 50px;
+            }
+            .timeline-content {
+                width: 100%;
+            }
+            .timeline-dot {
+                left: 20px;
+            }
+            .timeline-spacer {
+                display: none;
+            }
+            .contacts-container {
+                gap: 20px;
+            }
+            .contact-card {
+                min-width: 150px;
+                padding: 20px;
+            }
+            .location-card {
+                padding: 25px;
+            }
+            .location-photo {
+                height: 200px;
+            }
+            .calendar-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка управления музыкой -->
+    <button class="music-btn paused" id="musicBtn" title="Включить музыку">♪</button>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <!-- ⚠️ Замените src на путь к вашему общему фото -->
+            <img src="photo1.jpg"
+            alt="Владимир и Варвара" class="hero-photo">
+            <div class="floral-divider">❦</div>
+            <div class="hero-date">14 августа 2026</div>
+            <div class="hero-names">Владимир</div>
+            <div class="hero-ampersand">&</div>
+            <div class="hero-names">Варвара</div>
+            <div class="hero-subtitle">Мы женимся! Приглашаем вас стать частью нашей истории.</div>
+            <div class="floral-divider">❦</div>
+        </div>
+        <div class="scroll-down">⌄</div>
+    </section>
+
+    <!-- Timer Section -->
+    <section class="timer-section" id="timer">
+        <div class="container">
+            <h2 class="section-title">До нашей свадьбы осталось</h2>
+            <div class="timer-container" id="countdown">
+                <div class="timer-block">
+                    <span class="timer-number" id="days">00</span>
+                    <span class="timer-label">Дней</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-number" id="hours">00</span>
+                    <span class="timer-label">Часов</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-number" id="minutes">00</span>
+                    <span class="timer-label">Минут</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-number" id="seconds">00</span>
+                    <span class="timer-label">Секунд</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Календарь -->
+    <section class="section" id="calendar">
+        <div class="container">
+            <h2 class="section-title">Дата свадьбы</h2>
+            <div class="calendar-container">
+                <div class="calendar-header">Август 2026</div>
+                <table class="calendar-table">
+                    <thead>
+                        <tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="empty"></td><td class="empty"></td><td class="empty"></td>
+                            <td class="empty"></td><td class="empty"></td><td>1</td><td>2</td>
+                        </tr>
+                        <tr>
+                            <td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>10</td><td>11</td><td>12</td><td>13</td>
+                            <td class="wedding-day">14</td><td>15</td><td>16</td>
+                        </tr>
+                        <tr>
+                            <td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+                        </tr>
+                        <tr>
+                            <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
+                        </tr>
+                        <tr>
+                            <td>31</td><td class="empty"></td><td class="empty"></td><td class="empty"></td>
+                            <td class="empty"></td><td class="empty"></td><td class="empty"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section section-alt" id="about">
+        <div class="container">
+            <h2 class="section-title">О нашем событии</h2>
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p style="font-size: 1.1rem; color: #7a5c3e; line-height: 1.8;">
+                    Дорогие гости! Мы счастливы пригласить вас на самый важный день в нашей жизни.
+                    Этот день будет наполнен любовью, радостью и теплыми моментами,
+                    которыми мы хотим поделиться с каждым из вас.
+                </p>
+                <div class="floral-divider">✿ ❦ ✿</div>
+                <p style="font-size: 1.1rem; color: #7a5c3e; line-height: 1.8;">
+                    Мы создали этот вечер, чтобы он стал особенным не только для нас,
+                    но и для каждого гостя. Пусть этот день останется в сердцах
+                    как светлое и радостное воспоминание.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="section" id="location">
+        <div class="container">
+            <h2 class="section-title">Главная локация</h2>
+            <div class="location-card">
+                <!-- ⚠️ Замените src на фото ресторана «Сотый пруд» -->
+                <img src="photo2.jpg"
+                alt="Сотый пруд" class="location-photo">
+                <div class="location-name">«Сотый пруд»</div>
+                <div class="location-address">
+                    📍 Кумженская улица, 1г
+                </div>
+                <p style="color: #7a5c3e; margin-bottom: 20px;">
+                    Это место станет уютным гнёздышком, в котором воссоединятся воедино два молодых сердца.
+                </p>
+                <a href="https://yandex.ru/maps/?text=Кумженская%201г" class="map-btn" target="_blank">
+                    Открыть на карте
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="section section-alt" id="timeline">
+        <div class="container">
+            <h2 class="section-title">Тайминг мероприятия</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-title">Церемония бракосочетания</div>
+                        <div class="timeline-desc">Торжественная регистрация брака</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-spacer"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-spacer"></div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">16:00 — 16:30</div>
+                        <div class="timeline-title">Сбор гостей</div>
+                        <div class="timeline-desc">Встреча гостей, welcome-напитки</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-time">16:30</div>
+                        <div class="timeline-title">Начало мероприятия</div>
+                        <div class="timeline-desc">Праздничный вечер, поздравления, угощения</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-spacer"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-spacer"></div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">23:00</div>
+                        <div class="timeline-title">Завершение вечера</div>
+                        <div class="timeline-desc">Финальный танец и прощание с гостями</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wishes Section -->
+    <section class="section" id="wishes">
+        <div class="container">
+            <h2 class="section-title">Пожелания молодоженам</h2>
+            <div class="wishes-container">
+                <form class="wish-form" id="wishForm">
+                    <input type="text" placeholder="Ваше имя" id="wishName" required>
+                    <textarea placeholder="Ваши пожелания..." id="wishText" required></textarea>
+                    <button type="submit">Отправить пожелание</button>
+                </form>
+                <div class="wishes-list" id="wishesList"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section class="section section-alt" id="rsvp">
+        <div class="container">
+            <h2 class="section-title">Подтверждение присутствия</h2>
+            <div class="rsvp-container">
+                <form class="rsvp-form" id="rsvpForm" name="rsvp" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <!-- Скрытое поле защиты от спама -->
+    <p style="display:none;">
+        <label>Не заполняйте это поле, если вы человек: <input name="bot-field" /></label>
+    </p>
+
+    <div id="guestsContainer">
+        <div class="guest-group" data-guest="1">
+            <h3>Гость 1</h3>
+            <input type="text" name="guest_1_name" placeholder="Имя и фамилия" class="guest-name" required>
+            <select name="guest_1_attendance" class="guest-attendance" style="margin-top: 10px;">
+                <option value="">Статус</option>
+                <option value="yes">Приду</option>
+                <option value="no">Не смогу</option>
+            </select>
+            <div style="margin-top: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: #8b7355;">Как доберётесь?</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="guest_1_transport" value="self" checked> Своим ходом
+                    </label>
+                    <label>
+                        <input type="radio" name="guest_1_transport" value="transfer"> На трансфере
+                    </label>
+                </div>
+            </div>
+            <textarea name="guest_1_notes" placeholder="Дополнительная информация (аллергия, особые пожелания)" style="margin-top: 10px; min-height: 60px;"></textarea>
+        </div>
+    </div>
+    <button type="button" class="add-guest-btn" id="addGuestBtn">+ Добавить гостя</button>
+    <button type="submit" class="submit-btn">Подтвердить</button>
+</form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacts Section -->
+    <section class="section" id="contacts">
+        <div class="container">
+            <h2 class="section-title">Контакты молодоженов</h2>
+            <div class="contacts-container">
+                <div class="contact-card">
+                    <!-- ⚠️ Замените src на фото Владимира -->
+                    <img src="photo3.jpg"
+                    alt="Владимир" class="contact-photo">
+                    <div class="contact-name">Владимир</div>
+                    <div class="contact-role">Жених</div>
+                    <a href="tel:+79612892622" class="contact-phone">📞 8-961-289-26-22</a>
+                </div>
+                <div class="contact-card">
+                    <!-- ⚠️ Замените src на фото Варвары -->
+                    <img src="photo4.jpg"
+                    alt="Варвара" class="contact-photo">
+                    <div class="contact-name">Варвара</div>
+                    <div class="contact-role">Невеста</div>
+                    <a href="tel:+79889946244" class="contact-phone">📞 8-988-994-62-44</a>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 30px; color: #a09080; font-size: 0.9rem;">
+                По любым вопросам, связанным с мероприятием, вы можете обращаться к нам в любое время.
+            </p>
+        </div>
+    </section>
+
+    <!-- Farewell Section -->
+    <section class="farewell" id="farewell">
+        <div class="container">
+            <div class="floral-divider">✿ ❦ ✿</div>
+            <div class="farewell-text">С любовью и трепетом ждём вас!</div>
+            <div class="heart-divider">❤</div>
+            <div class="farewell-names">Владимир & Варвара</div>
+            <div class="floral-divider">✿ ❦ ✿</div>
+            <p style="color: #a09080; margin-top: 20px; font-size: 0.9rem;">
+                14 августа 2026 года
+            </p>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Спасибо!</h3>
+            <p id="modalMessage"></p>
+            <button onclick="closeModal()">Закрыть</button>
+        </div>
+    </div>
+
+   <script>
+    // ===== ТАЙМЕР =====
+    function updateTimer() {
+        var weddingDate = new Date(2026, 7, 14, 15, 0, 0).getTime();
+        var now = new Date().getTime();
+        var distance = weddingDate - now;
+
+        if (distance < 0) {
+            document.getElementById("days").textContent = "00";
+            document.getElementById("hours").textContent = "00";
+            document.getElementById("minutes").textContent = "00";
+            document.getElementById("seconds").textContent = "00";
+            return;
+        }
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = String(days).padStart(2, "0");
+        document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+        document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+        document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+    }
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    // ===== МУЗЫКА (с автостартом при первом клике) =====
+    const musicBtn = document.getElementById('musicBtn');
+    let audioElement = null;
+    let isMusicPlaying = false;
+    let musicInitialized = false;
+
+    function createAudio() {
+        const audio = new Audio('music.mp3'); // убедитесь, что файл melody.mp3 лежит рядом с index.html
+        audio.loop = true;
+        audio.volume = 0.3;
+        return audio;
+    }
+
+    function initMusic() {
+        audioElement = createAudio();
+        musicBtn.style.display = 'flex';
+        musicInitialized = true;
+    }
+
+    function startMusicOnFirstInteraction() {
+        if (!audioElement) return;
+        audioElement.play().then(() => {
+            isMusicPlaying = true;
+            musicBtn.classList.remove('paused');
+            musicBtn.textContent = '♫';
+        }).catch(() => {});
+        document.body.removeEventListener('click', startMusicOnFirstInteraction);
+        document.body.removeEventListener('touchstart', startMusicOnFirstInteraction);
+        document.body.removeEventListener('keydown', startMusicOnFirstInteraction);
+    }
+
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!audioElement) audioElement = createAudio();
+        if (isMusicPlaying) {
+            audioElement.pause();
+            musicBtn.classList.add('paused');
+            musicBtn.textContent = '♪';
+            isMusicPlaying = false;
+        } else {
+            audioElement.play().then(() => {
+                isMusicPlaying = true;
+                musicBtn.classList.remove('paused');
+                musicBtn.textContent = '♫';
+            }).catch(() => {});
+        }
+    });
+
+    window.addEventListener('load', () => {
+        initMusic();
+        document.body.addEventListener('click', startMusicOnFirstInteraction);
+        document.body.addEventListener('touchstart', startMusicOnFirstInteraction);
+        document.body.addEventListener('keydown', startMusicOnFirstInteraction);
+    });
+
+    // ===== ПОЖЕЛАНИЯ =====
+    const wishForm = document.getElementById('wishForm');
+    const wishesList = document.getElementById('wishesList');
+    let wishes = JSON.parse(localStorage.getItem('weddingWishes') || '[]');
+
+    function renderWishes() {
+        wishesList.innerHTML = wishes.map(w =>
+            `<div class="wish-item">
+                <div class="name">${escapeHtml(w.name)}</div>
+                <div class="text">${escapeHtml(w.text)}</div>
+            </div>`
+        ).join('');
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    wishForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('wishName').value.trim();
+        const text = document.getElementById('wishText').value.trim();
+        if (name && text) {
+            wishes.unshift({ name, text });
+            if (wishes.length > 50) wishes = wishes.slice(0, 50);
+            localStorage.setItem('weddingWishes', JSON.stringify(wishes));
+            renderWishes();
+            showModal('Спасибо!', 'Ваше пожелание сохранено.');
+            wishForm.reset();
+        }
+    });
+
+    renderWishes();
+
+    // ===== RSVP (Netlify Forms) =====
+    let guestCounter = 1;
+
+    document.getElementById('addGuestBtn').addEventListener('click', () => {
+        guestCounter++;
+        const container = document.getElementById('guestsContainer');
+        const guestGroup = document.createElement('div');
+        guestGroup.className = 'guest-group';
+        guestGroup.dataset.guest = guestCounter;
+        guestGroup.innerHTML = `
+            <h3>Гость ${guestCounter}</h3>
+            <input type="text" name="guest_${guestCounter}_name" placeholder="Имя и фамилия" class="guest-name">
+            <select name="guest_${guestCounter}_attendance" class="guest-attendance" style="margin-top: 10px;">
+                <option value="">Статус</option>
+                <option value="yes">Приду</option>
+                <option value="no">Не смогу</option>
+            </select>
+            <div style="margin-top: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: #8b7355;">Как доберётесь?</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="guest_${guestCounter}_transport" value="self" checked> Своим ходом
+                    </label>
+                    <label>
+                        <input type="radio" name="guest_${guestCounter}_transport" value="transfer"> На трансфере
+                    </label>
+                </div>
+            </div>
+            <textarea name="guest_${guestCounter}_notes" placeholder="Дополнительная информация (аллергия, особые пожелания)" style="margin-top: 10px; min-height: 60px;"></textarea>
+            <button type="button" class="remove-guest-btn" onclick="this.parentElement.remove()">Удалить гостя</button>
+        `;
+        container.appendChild(guestGroup);
+    });
+
+    // Обработчик отправки формы (можно оставить пустым — Netlify перехватит)
+    document.getElementById('rsvpForm').addEventListener('submit', (e) => {
+        // Не отменяем стандартную отправку, чтобы Netlify Forms сохранил данные.
+        // После перезагрузки страницы будет видно сообщение Netlify по умолчанию.
+        // Если нужно кастомное модальное окно — можно доработать, но это не обязательно.
+    });
+
+    // ===== МОДАЛЬНОЕ ОКНО =====
+    function showModal(title, message) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalMessage').textContent = message;
+        document.getElementById('successModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('successModal').classList.remove('active');
+    }
+
+    document.getElementById('successModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // ===== ПЛАВНЫЙ СКРОЛЛ =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    document.querySelector('.scroll-down').addEventListener('click', () => {
+        document.getElementById('timer').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+</body>
+</html>
