@@ -795,7 +795,7 @@
                 padding: 15px;
             }
         }
-      .music-btn-wrapper {
+     .music-btn-wrapper {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -828,7 +828,7 @@
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
-/* Адаптация для мобильных: уменьшаем размер */
+/* Адаптация для мобильных */
 @media (max-width: 600px) {
     .music-tooltip {
         font-size: 0.8rem;
@@ -1146,65 +1146,67 @@
     updateTimer();
     setInterval(updateTimer, 1000);
 
-    // ===== МУЗЫКА (с автостартом при первом клике) =====
-    const musicBtn = document.getElementById('musicBtn');
-    let audioElement = null;
-    let isMusicPlaying = false;
-    let musicInitialized = false;
+   // ===== МУЗЫКА (автостарт при первом клике + подсказка) =====
+const musicBtn = document.getElementById('musicBtn');
+const musicTooltip = document.getElementById('musicTooltip');
+let audioElement = null;
+let isMusicPlaying = false;
 
-    function createAudio() {
-        const audio = new Audio('music.mp3'); // убедитесь, что файл melody.mp3 лежит рядом с index.html
-        audio.loop = true;
-        audio.volume = 0.3;
-        return audio;
-    }
+function createAudio() {
+    const audio = new Audio('music.mp3');
+    audio.loop = true;
+    audio.volume = 0.3;
+    return audio;
+}
 
-    function initMusic() {
+// Запуск музыки и скрытие подсказки при любом взаимодействии
+function startMusicOnFirstInteraction() {
+    if (!audioElement) {
         audioElement = createAudio();
-        musicBtn.style.display = 'flex';
-        musicInitialized = true;
     }
+    audioElement.play().then(() => {
+        isMusicPlaying = true;
+        musicBtn.classList.remove('paused');
+        musicBtn.textContent = '♫';
+        if (musicTooltip) musicTooltip.style.display = 'none';
+    }).catch(() => {});
+    // Удаляем слушатели, чтобы не запускать повторно
+    document.body.removeEventListener('click', startMusicOnFirstInteraction);
+    document.body.removeEventListener('touchstart', startMusicOnFirstInteraction);
+    document.body.removeEventListener('keydown', startMusicOnFirstInteraction);
+}
 
-    function startMusicOnFirstInteraction() {
-        if (!audioElement) return;
+// Ручное управление кнопкой (включение/выключение)
+musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // чтобы не срабатывал автозапуск при клике на кнопку
+    if (!audioElement) {
+        audioElement = createAudio();
+    }
+    if (isMusicPlaying) {
+        audioElement.pause();
+        musicBtn.classList.add('paused');
+        musicBtn.textContent = '♪';
+        isMusicPlaying = false;
+    } else {
         audioElement.play().then(() => {
             isMusicPlaying = true;
             musicBtn.classList.remove('paused');
             musicBtn.textContent = '♫';
+            if (musicTooltip) musicTooltip.style.display = 'none';
         }).catch(() => {});
-        document.body.removeEventListener('click', startMusicOnFirstInteraction);
-        document.body.removeEventListener('touchstart', startMusicOnFirstInteraction);
-        document.body.removeEventListener('keydown', startMusicOnFirstInteraction);
     }
+});
 
-    musicBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-         const tooltip = document.getElementById('musicTooltip');
-    if (tooltip) tooltip.style.display = 'none';
-    
-    if (!audioElement) audioElement = createAudio();
-    if (isMusicPlaying) {
-        if (!audioElement) audioElement = createAudio();
-        if (isMusicPlaying) {
-            audioElement.pause();
-            musicBtn.classList.add('paused');
-            musicBtn.textContent = '♪';
-            isMusicPlaying = false;
-        } else {
-            audioElement.play().then(() => {
-                isMusicPlaying = true;
-                musicBtn.classList.remove('paused');
-                musicBtn.textContent = '♫';
-            }).catch(() => {});
-        }
-    });
-
-    window.addEventListener('load', () => {
-        initMusic();
-        document.body.addEventListener('click', startMusicOnFirstInteraction);
-        document.body.addEventListener('touchstart', startMusicOnFirstInteraction);
-        document.body.addEventListener('keydown', startMusicOnFirstInteraction);
-    });
+// Инициализация при загрузке
+window.addEventListener('load', () => {
+    // Сразу показываем кнопку и подсказку
+    musicBtn.style.display = 'flex';
+    if (musicTooltip) musicTooltip.style.display = 'block';
+    // Вешаем слушатели на первый контакт
+    document.body.addEventListener('click', startMusicOnFirstInteraction);
+    document.body.addEventListener('touchstart', startMusicOnFirstInteraction);
+    document.body.addEventListener('keydown', startMusicOnFirstInteraction);
+});
 
  
     // ===== RSVP (Netlify Forms) =====
