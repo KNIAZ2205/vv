@@ -1020,12 +1020,11 @@
         <div class="container">
             <h2 class="section-title">Пожелания молодоженам</h2>
             <div class="wishes-container">
-                <form class="wish-form" id="wishForm">
-                    <input type="text" placeholder="Ваше имя" id="wishName" required>
-                    <textarea placeholder="Ваши пожелания..." id="wishText" required></textarea>
-                    <button type="submit">Отправить пожелание</button>
-                </form>
-                <div class="wishes-list" id="wishesList"></div>
+                <form class="wish-form" id="wishForm" action="https://formspree.io/f/xaqgvwdz" method="POST">
+    <input type="text" name="name" placeholder="Ваше имя" id="wishName" required>
+    <textarea name="message" placeholder="Ваши пожелания..." id="wishText" required></textarea>
+    <button type="submit">Отправить пожелание</button>
+</form>
             </div>
         </div>
     </section>
@@ -1207,42 +1206,7 @@
         document.body.addEventListener('keydown', startMusicOnFirstInteraction);
     });
 
-    // ===== ПОЖЕЛАНИЯ =====
-    const wishForm = document.getElementById('wishForm');
-    const wishesList = document.getElementById('wishesList');
-    let wishes = JSON.parse(localStorage.getItem('weddingWishes') || '[]');
-
-    function renderWishes() {
-        wishesList.innerHTML = wishes.map(w =>
-            `<div class="wish-item">
-                <div class="name">${escapeHtml(w.name)}</div>
-                <div class="text">${escapeHtml(w.text)}</div>
-            </div>`
-        ).join('');
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    wishForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('wishName').value.trim();
-        const text = document.getElementById('wishText').value.trim();
-        if (name && text) {
-            wishes.unshift({ name, text });
-            if (wishes.length > 50) wishes = wishes.slice(0, 50);
-            localStorage.setItem('weddingWishes', JSON.stringify(wishes));
-            renderWishes();
-            showModal('Спасибо!', 'Ваше пожелание сохранено.');
-            wishForm.reset();
-        }
-    });
-
-    renderWishes();
-
+ 
     // ===== RSVP (Netlify Forms) =====
     let guestCounter = 1;
 
