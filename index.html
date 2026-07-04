@@ -810,7 +810,8 @@
     font-size: 0.9rem;
     padding: 8px 15px;
     border-radius: 20px;
-    white-space: nowrap;
+    white-space: normal;          /* ← разрешаем перенос строк */
+    max-width: 200px;             /* ← ограничиваем ширину */
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     animation: fadeInTooltip 0.5s ease-out;
     position: relative;
@@ -819,8 +820,8 @@
     content: '';
     position: absolute;
     right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 15px;
+    transform: none;
     border: 6px solid transparent;
     border-right-color: #8b7355;
 }
